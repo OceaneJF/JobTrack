@@ -20,7 +20,7 @@ try {
         echo json_encode(array('error' => 'Wrong password'));
         exit();
     }
-    echo json_encode(array('jwt' => getJWT()));
+    echo json_encode(array('jwt' => getJWT(), 'user_id' => $users[0]['id']));
 } catch (PDOException $e) {
     echo json_encode('Vous avez deja un compte');
 }

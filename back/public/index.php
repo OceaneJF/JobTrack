@@ -10,11 +10,18 @@ $router->map('POST', '/api/companies', 'companies');
 $router->map('PATCH', '/api/companies/[i:user_id]', 'companies');
 $router->map('DELETE', '/api/companies/[i:company_id]', 'companies');
 
+// CORS headers for all requests
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+// Handle OPTIONS method (preflight requests)
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(204); // No Content
+    exit();
+}
 
 $match = $router->match();
 if (is_array($match)) {
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
     require "../api/{$match['target']}.php";
 }

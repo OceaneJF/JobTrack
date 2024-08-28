@@ -1,6 +1,32 @@
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
+import {api} from "../utils.js";
+import {useState} from "react";
 
 export function Signup() {
+    const navigate = useNavigate()
+    const [isNotConfirm, setisNotConfirm] = useState(false);
+    const [alreadyRegistered, setalreadyRegistered] = useState(false);
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const formdata = new FormData(e.target)
+        if (formdata.get(password) != formdata.get(passwordConfirm)) {
+            setisNotConfirm(true)
+            return
+        }
+        const signupData = {
+            email: formdata.get('email'),
+            password: formdata.get('passwordConfirm'),
+        }
+        const response = await api("http://localhost:8000/api/signin", {
+            method: "POST",
+            body: JSON.stringify(signupData),
+        });
+        if (response.error) {
+            setalreadyRegistered(true);
+            return
+        }
+        navigate('/home');
+    }
     return <div
         className="h-screen flex items-center justify-center bg-[url('src/assets/images/fond.png')] bg-cover bg-center">
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -10,7 +36,7 @@ export function Signup() {
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" action="#" method="POST">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="email" className="block text-lg font-medium leading-6 text-gray-900">Adresse
                             mail</label>
@@ -38,16 +64,19 @@ export function Signup() {
                                 passe</label>
                         </div>
                         <div className="mt-2">
-                            <input id="password" name="password" type="password" autoComplete="current-password"
+                            <input id="passwordConfirm" name="passwordConfirm" type="password"
+                                   autoComplete="current-password"
                                    required
-                                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"/>
+                                   className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset  ${isNotConfirm ? 'ring-red-700' : 'ring-gray-300'} placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"`}/>
                         </div>
+                        {isNotConfirm ? <p className="text-sm text-red-600">Mot de passe incorrect</p> : <p></p>}
                     </div>
 
                     <div>
                         <button type="submit"
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-medium leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">S'inscrire
                         </button>
+                        {alreadyRegistered ? <p className="text-sm text-red-600">Vous avez déjà un compte</p> : <p></p>}
                     </div>
                 </form>
 

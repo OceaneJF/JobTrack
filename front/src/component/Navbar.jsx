@@ -1,4 +1,4 @@
-import {NavLink} from "react-router-dom"
+import {NavLink, useNavigate} from "react-router-dom"
 import {SearchBar} from "./SearchBar.jsx";
 import React, {useState} from 'react';
 import {ModalLogout} from "./ModalLogout.jsx";
@@ -6,7 +6,7 @@ import {ModalLogout} from "./ModalLogout.jsx";
 
 export function Navbar() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const navigate = useNavigate()
     const openModal = () => {
         setIsModalOpen(true);
     };
@@ -16,9 +16,9 @@ export function Navbar() {
     };
 
     const confirmAction = () => {
-        // Ajoutez ici la logique pour la déconnexion ou l'action confirmée
         setIsModalOpen(false);
-        console.log('Déconnexion confirmée');
+        window.localStorage.removeItem("api-key");
+        navigate("");
     };
     return <>
         <div className="navbar bg-indigo-50 md:p-4 p-2">

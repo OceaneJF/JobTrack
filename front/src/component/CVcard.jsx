@@ -1,7 +1,9 @@
+import React from "react";
+
 export function CVcard() {
     return <div
         className="w-80">
-        <div className="flex items-center justify-center w-full h-[500px]">
+        <div className="flex items-center justify-center w-full h-[500px] relative">
             <label
                 htmlFor="dropzone-file"
                 className="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 p-6"
@@ -31,6 +33,7 @@ export function CVcard() {
                 </div>
                 <input id="dropzone-file" type="file" className="hidden"/>
             </label>
+            <i className="fa-solid fa-trash-can fa-xl hover:text-indigo-500 absolute bottom-10"></i>
         </div>
     </div>
 }

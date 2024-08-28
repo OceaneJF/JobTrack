@@ -17,7 +17,6 @@ export function Login() {
             method: "POST",
             body: JSON.stringify(loginData),
         });
-        console.log(response)
         if (response.status === "failed") {
             setIsWrongEmail(true);
             return
@@ -27,6 +26,7 @@ export function Login() {
             return
         }
         window.localStorage.setItem("api-key", response.jwt);
+        window.localStorage.setItem("user-id", response.user_id);
         navigate('/home');
     }
 

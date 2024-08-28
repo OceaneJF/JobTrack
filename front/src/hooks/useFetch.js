@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 
-export function useFecth(url, options = {}) {
+export function useFetch(url, options = {}) {
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [error, setError] = useState(null);
 
     useEffect(() => {
@@ -20,4 +20,7 @@ export function useFecth(url, options = {}) {
             setLoading(false);
         })
     }, []);
+    return {
+        loading, data, error
+    }
 }
