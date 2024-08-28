@@ -1,8 +1,7 @@
 {
-    "require": {
-        "altorouter/altorouter": "^2.0",
-      "ext-pdo": "*",
-        "firebase/php-jwt": "^6.10",
-      "ext-cassandra": "*"
-    }
+  "require": {
+    "altorouter/altorouter": "^2.0",
+    "ext-pdo": "*",
+    "firebase/php-jwt": "^6.10"
+  }
 }

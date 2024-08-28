@@ -3,6 +3,8 @@ import {createBrowserRouter, RouterProvider, useRouteError} from 'react-router-d
 import {Root} from "./component/Root.jsx";
 import {Home} from "./pages/Home.jsx";
 import {Welcome} from "./pages/Welcome.jsx";
+import {Login} from "./pages/Login.jsx";
+import {Signup} from "./pages/Signup.jsx";
 
 
 const router = createBrowserRouter([
@@ -18,6 +20,14 @@ const router = createBrowserRouter([
             {
                 path: "",
                 element: <Welcome/>
+            },
+            {
+                path: "login",
+                element: <Login/>
+            },
+            {
+                path: "signup",
+                element: <Signup/>
             }
         ]
     }

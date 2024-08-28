@@ -21,12 +21,12 @@ export function Welcome() {
                 ciblées <br/>dans
                 votre recherche d'emploi.</p>
             <div className="flex justify-center space-x-4">
-                <NavLink to="/Login.jsx.jsx">
+                <NavLink to="/login">
                     <button className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
                         Se connecter
                     </button>
                 </NavLink>
-                <NavLink to="/Signin.jsx">
+                <NavLink to="/signup">
                     <button
                         className="bg-white border-2 border-indigo-500 hover:bg-indigo-500 hover:text-white text-indigo-500 font-bold py-2 px-4 rounded">
                         S'inscrire

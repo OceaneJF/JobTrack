@@ -5,16 +5,18 @@ require_once '../utils/jwt.php';
 global $pdo;
 
 try {
-//    header('Content-type: application/json');
+    header('Content-type: application/json');
     $data = json_decode(file_get_contents('php://input'), true);
     $stmt = $pdo->prepare('SELECT * FROM `users` WHERE `email`=:email ');
     $stmt->execute(array(':email' => $data['email']));
     $users = $stmt->fetchAll();
     if (count($users) == 0) {
+        header('HTTP/1.1 401 Unauthorized');
         echo json_encode(array('status' => 'failed'));
         exit();
     }
     if (!password_verify($data['password'], $users[0]['password'])) {
+        header('HTTP/1.1 401 Unauthorized');
         echo json_encode(array('error' => 'Wrong password'));
         exit();
     }

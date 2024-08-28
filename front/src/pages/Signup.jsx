@@ -1,6 +1,6 @@
 import {NavLink} from "react-router-dom";
 
-export function Signin() {
+export function Signup() {
     return <div
         className="h-screen flex items-center justify-center bg-[url('src/assets/images/fond.png')] bg-cover bg-center">
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -53,7 +53,7 @@ export function Signin() {
 
                 <p className="mt-10 text-center text-gray-500">
                     Deja inscrit ?
-                    <NavLink to="/Signin.jsx"
+                    <NavLink to="/login"
                              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"> Connectez-vous
                         ici</NavLink>
                 </p>
