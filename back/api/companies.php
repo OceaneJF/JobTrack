@@ -1,5 +1,6 @@
 <?php
-
+require_once '../database/database.php';
+require_once '../utils/jwt.php';
 
 header('Content-type: application/json');
 if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
