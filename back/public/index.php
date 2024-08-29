@@ -12,6 +12,7 @@ $router->map('DELETE', '/api/companies/[i:company_id]', 'companies');
 $router->map('GET', '/api/company/[i:company_id]', 'company');
 
 $router->map('POST', '/api/user/[i:user_id]', 'user');
+$router->map('DELETE', '/api/user/[i:user_id]', 'user');
 
 // CORS headers for all requests
 header("Access-Control-Allow-Origin: *");
