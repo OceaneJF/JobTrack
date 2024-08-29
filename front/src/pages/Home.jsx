@@ -1,14 +1,16 @@
 import {Card} from "../component/Card.jsx";
 import {CVcard} from "../component/CVcard.jsx";
 import {useFetch} from "../hooks/useFetch.js";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {Spinner} from "../component/Spinner.jsx";
 import {ModalCard} from "../component/ModalCard.jsx";
+import {SearchContext} from "../component/Root.jsx";
 
 export function Home() {
     const apiKey = window.localStorage.getItem("api-key");
     const userId = window.localStorage.getItem("user-id");
     const [openModal, setOpenModal] = useState(false);
+    const searchQuery = useContext(SearchContext)
 
     const {loading, data, error} = useFetch(`http://localhost:8000/api/companies/${userId}`, {
         headers: {
@@ -32,7 +34,7 @@ export function Home() {
                     <i className="fa-solid fa-plus text-2xl font-bold text-center"></i>
                 </div>
             </div>
-            {data.map((company, index) => (
+            {data.filter((company) => company.name.includes(searchQuery ?? '') || company.job_title.includes(searchQuery ?? '')).map((company, index) => (
                 <Card
                     key={index}
                     title={company.name}

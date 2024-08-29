@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {ModalLogout} from "./ModalLogout.jsx";
 
 
-export function Navbar() {
+export function Navbar({setSearchQuery}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate()
     const openModal = () => {
@@ -30,7 +30,7 @@ export function Navbar() {
             </div>
             <div className=" flex-none w-fit md:w-[450px] md:gap-2 gap-6">
                 <div className="form-control w-full">
-                    <SearchBar/>
+                    <SearchBar setSearchQuery={setSearchQuery}/>
                 </div>
                 <div>
                     <div className="w-10 rounded-full">
