@@ -9,6 +9,9 @@ $router->map('GET', '/api/companies/[i:user_id]', 'companies');
 $router->map('POST', '/api/companies', 'companies');
 $router->map('PATCH', '/api/companies/[i:user_id]', 'companies');
 $router->map('DELETE', '/api/companies/[i:company_id]', 'companies');
+$router->map('GET', '/api/company/[i:company_id]', 'company');
+
+$router->map('POST', '/api/user/[i:user_id]', 'user');
 
 // CORS headers for all requests
 header("Access-Control-Allow-Origin: *");
