@@ -78,7 +78,6 @@ export function ModalCard({isOpenModal, setOpenModal, id = null}) {
         }
     }
 
-
     const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
         const byteCharacters = atob(b64Data);
         const byteArrays = [];
@@ -242,15 +241,18 @@ export function ModalCard({isOpenModal, setOpenModal, id = null}) {
                                        name={'offer_pdf'}
                                        value={data?.offer_pdf}></InputFile>
                         </div>
+                    </div>
+                    <div className={'flex justify-between items-center'}>
+                        <button type={"submit"}
+                                className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-fit">
+                            Enregistrer
+                        </button>
                         <i onClick={openModal} className="fa-solid fa-trash-can fa-xl hover:text-indigo-500"></i>
                     </div>
-                    <button type={"submit"}
-                            className="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded w-fit">
-                        Enregistrer
-                    </button>
+
                 </div>
             </form>
-            <ModalLogout isOpen={isModalOpen} onClose={closeModal} onConfirm={confirmAction}
+            <ModalLogout isOpen={isModalOpen} onClose={closeModal} onConfirm={confirmAction} id={id}
                          title="Etes vous sur de vouloir supprimer cette entreprise?"/>
         </div>
     );

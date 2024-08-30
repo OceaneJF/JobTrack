@@ -1,6 +1,26 @@
 import React from 'react';
+import {api} from "../utils.js";
+import {useNavigate} from "react-router-dom";
 
-export function ModalLogout({isOpen, onClose, onConfirm, title}) {
+export function ModalLogout({isOpen, onClose, onConfirm, title, id = null}) {
+    const apiKey = window.localStorage.getItem("api-key")
+    const navigate = useNavigate()
+
+    async function handleSup(e) {
+        if (id) {
+            const response = await api(`http://localhost:8000/api/companies/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${apiKey}`
+                }
+            });
+            if (response.status) {
+                navigate(0);
+            }
+        }
+    }
+
     if (!isOpen) return null;
 
     return (
@@ -28,7 +48,7 @@ export function ModalLogout({isOpen, onClose, onConfirm, title}) {
                 {/* Boutons */}
                 <div className="flex justify-around">
                     <button
-                        onClick={onConfirm}
+                        onClick={id ? handleSup : onConfirm}
                         className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
                     >
                         Oui, je suis sûr

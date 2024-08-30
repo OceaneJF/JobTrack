@@ -1,6 +1,21 @@
 <?php
 require_once '../database/database.php';
 
+require_once '../utils/jwt.php';
+
+header('Content-type: application/json');
+if (!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    echo json_encode(['status' => false, 'message' => "Unauthorized Access!"]);
+    header('HTTP/1.1 401 Unauthorized');
+    exit();
+}
+$token = trim(explode("Bearer", $_SERVER['HTTP_AUTHORIZATION'])[1]);
+if (expiredJWT($token)) {
+    echo json_encode(['status' => false, 'message' => "Unauthorized Access!"]);
+    header('HTTP/1.1 401 Unauthorized');
+    exit();
+}
+
 global $pdo;
 try {
     $uri = $_SERVER['REQUEST_URI'];
