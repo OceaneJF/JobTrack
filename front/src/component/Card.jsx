@@ -1,15 +1,14 @@
 import {ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger} from "./ui/context-menu.jsx";
 import {api} from "../utils.js";
-import {useState} from "react";
+import React, {useState} from "react";
 import {ModalCard} from "./ModalCard.jsx";
 
 export function Card({title, description, url, id}) {
     const [isHidden, setIsHidden] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const apiKey = window.localStorage.getItem("api-key")
 
     async function handleSup(e) {
-        const apiKey = window.localStorage.getItem("api-key");
-
         const response = await api(`http://localhost:8000/api/companies/${id}`, {
             method: "DELETE",
             headers: {
@@ -23,7 +22,7 @@ export function Card({title, description, url, id}) {
     }
 
     function handleMod(e) {
-        console.log("Mod");
+        setOpenModal(true);
     }
 
     return <ContextMenu>
@@ -50,6 +49,6 @@ export function Card({title, description, url, id}) {
                 Modifier
             </ContextMenuItem>
         </ContextMenuContent>
-        <ModalCard isOpenModal={openModal} setOpenModal={setOpenModal}/>
+        <ModalCard isOpenModal={openModal} setOpenModal={setOpenModal} id={id ?? null}/>
     </ContextMenu>
 }

@@ -133,40 +133,47 @@ function patchCompany()
                 }
             }
         }
-        $uri = $_SERVER['REQUEST_URI'];
 
-        $stmt = $pdo->prepare('UPDATE Company SET company_user_id=:company_user_id,
-                   name=:name,
-                   description=:description,
-                   image=:image,
-                   address=:address,
-                   email=:email,
-                   phone=:phone,
-                   linkedin=:linkedin,
-                   applied_at=:applied_at,
-                   answered_at=:answered_at,
-                   job_title=:job_title,
-                   cv=:cv,
-                   cover_letter=:cover_letter,
-                   offer_link=:offer_link,
-                   offer_pdf=:offer_pdf
-WHERE id=:id');
-        $stmt->execute(array(':company_user_id' => $data['company_user_id'],
-            ':name' => $data['name'],
-            ':description' => $data['description'],
-            ':image' => file_get_contents($data['image']),
-            ':address' => $data['address'],
-            ':email' => $data['email'],
-            ':phone' => $data['phone'],
-            ':linkedin' => $data['linkedin'],
-            ':applied_at' => $data['applied_at'],
-            ':answered_at' => $data['answered_at'],
-            ':job_title' => $data['job_title'],
-            ':cv' => file_get_contents($data['cv']),
-            ':cover_letter' => file_get_contents($data['cover_letter']),
-            ':offer_link' => $data['offer_link'],
-            ':offer_pdf' => file_get_contents($data['offer_pdf']),
-            ':id' => explode("/", $uri)[3]));
+        $fieldsToUpdate = [];
+        $params = [];
+
+        $fields = [
+            'company_user_id',
+            'name',
+            'description',
+            'image',
+            'address',
+            'email',
+            'phone',
+            'linkedin',
+            'applied_at',
+            'answered_at',
+            'job_title',
+            'cv',
+            'cover_letter',
+            'offer_link',
+            'offer_pdf'
+        ];
+
+        foreach ($fields as $field) {
+            if (isset($data[$field])) {
+                if (in_array($field, ['image', 'cv', 'cover_letter', 'offer_pdf'])) {
+                    $fieldsToUpdate[] = "$field = :$field";
+                    $params[":$field"] = file_get_contents($data[$field]);
+                } else {
+                    $fieldsToUpdate[] = "$field = :$field";
+                    $params[":$field"] = $data[$field];
+                }
+            }
+        }
+
+        $uri = $_SERVER['REQUEST_URI'];
+        $params[':id'] = explode("/", $uri)[3];
+
+        $sql = 'UPDATE Company SET ' . implode(', ', $fieldsToUpdate) . ' WHERE id = :id';
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
 
         echo json_encode(array('status' => 'ok'));
     } catch (PDOException $e) {

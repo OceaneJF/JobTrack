@@ -1,10 +1,40 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
-export function InputFile({name, title, updateTitle}) {
+export function InputFile({name, title, updateTitle, value}) {
     const [file, setFile] = useState(null);
 
+    const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        const blob = new Blob(byteArrays, {type: contentType});
+        return blob;
+    }
+
+    useEffect(() => {
+        if (value) {
+            const blob = b64toBlob(value, 'application/pdf');
+            setFile(blob);
+        }
+    }, []);
+
     function getBlob(e) {
-        return new Blob(e.target.files, {type: e.target.files[0].type})
+        if (e.target.files[0].type === 'application/pdf') {
+            return new Blob(e.target.files, {type: e.target.files[0].type})
+        }
+        return
     }
 
     return (
@@ -16,6 +46,7 @@ export function InputFile({name, title, updateTitle}) {
                 </label>
                 <input onChange={(e) => setFile(getBlob(e))} id={name}
                        name={name} type="file"
+                       accept={'application/pdf'}
                        className="hidden"/>
             </>
             {file && <a href={URL.createObjectURL(file)} download className="text-center hover:text-indigo-500">
