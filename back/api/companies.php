@@ -49,57 +49,55 @@ function postCompany()
     try {
         $data = $_POST;
         $files = $_FILES;
-        $stmt = $pdo->prepare('INSERT INTO Company (company_user_id,
-                   name,
-                   description,
-                   image,
-                   address,
-                   email,
-                   phone,
-                   linkedin,
-                   applied_at,
-                   answered_at,
-                   job_title,
-                   cv,
-                   cover_letter,
-                   offer_link,
-                   offer_pdf)
-VALUES (:company_user_id,
-        :name,
-        :description,
-        :image,
-        :address,
-        :email,
-        :phone,
-        :linkedin,
-        :applied_at,
-        :answered_at,
-        :job_title,
-        :cv,
-        :cover_letter,
-        :offer_link,
-        :offer_pdf)');
-        $stmt->execute(array(':company_user_id' => $data['company_user_id'],
-            ':name' => $data['name'],
-            ':description' => $data['description'],
-            ':image' => file_get_contents($files['image']['tmp_name']),
-            ':address' => $data['address'],
-            ':email' => $data['email'],
-            ':phone' => $data['phone'],
-            ':linkedin' => $data['linkedin'],
-            ':applied_at' => $data['applied_at'],
-            ':answered_at' => $data['answered_at'],
-            ':job_title' => $data['job_title'],
-            ':cv' => file_get_contents($files['cv']['tmp_name']),
-            ':cover_letter' => file_get_contents($files['cover_letter']['tmp_name']),
-            ':offer_link' => $data['offer_link'],
-            ':offer_pdf' => file_get_contents($files['offer_pdf']['tmp_name'])));
+
+        $fieldsToInsert = [];
+        $placeholders = [];
+        $params = [];
+
+        $fields = [
+            'company_user_id',
+            'name',
+            'description',
+            'image',
+            'address',
+            'email',
+            'phone',
+            'linkedin',
+            'applied_at',
+            'answered_at',
+            'job_title',
+            'cv',
+            'cover_letter',
+            'offer_link',
+            'offer_pdf'
+        ];
+
+        foreach ($fields as $field) {
+            if (isset($files[$field])) {
+                if (in_array($field, ['image', 'cv', 'cover_letter', 'offer_pdf'])) {
+                    if ($files[$field]['tmp_name'] != '') {
+                        $fieldsToInsert[] = $field;
+                        $placeholders[] = ":$field";
+                        $params[":$field"] = file_get_contents($files[$field]['tmp_name']);
+                    }
+                }
+            } elseif (isset($data[$field])) {
+                $fieldsToInsert[] = $field;
+                $placeholders[] = ":$field";
+                $params[":$field"] = $data[$field];
+            }
+        }
+
+        $sql = 'INSERT INTO Company (' . implode(', ', $fieldsToInsert) . ') VALUES (' . implode(', ', $placeholders) . ')';
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+
         echo json_encode(array('status' => 'ok'));
     } catch (PDOException $e) {
         echo json_encode($e->getMessage());
     }
 }
-
 
 function patchCompany()
 {

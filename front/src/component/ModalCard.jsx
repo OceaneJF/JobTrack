@@ -49,7 +49,6 @@ export function ModalCard({isOpenModal, setOpenModal, id = null}) {
     const handlePostSubmit = async (form) => {
         const formdata = new FormData(form)
         formdata.append("company_user_id", window.localStorage.getItem("user-id"));
-
         const response = await api("http://localhost:8000/api/companies", {
             method: "POST",
             body: formdata,
