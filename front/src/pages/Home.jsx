@@ -25,8 +25,8 @@ export function Home() {
     if (error) {
         return <div className="alert-error">{error.toString()}</div>
     }
-    return <div className="bg-indigo-50 h-screen flex ">
-        <div className="p-16 pr-0 flex flex-wrap w-full gap-16 w-3/4 h-fit">
+    return <div className="bg-indigo-50 h-full md:h-screen flex flex-col md:flex-row">
+        <div className="p-16 pr-0 flex flex-wrap w-full gap-10 w-3/4 h-fit">
             <div
                 onClick={() => setOpenModal(true)}
                 className="w-64 h-48 rounded-lg bg-gray-100 relative p-7 border-2 border-gray-300 transition ease-out duration-500 overflow-visible hover:border-indigo-600 hover:shadow-lg">
@@ -45,7 +45,7 @@ export function Home() {
             ))}
             <ModalCard isOpenModal={openModal} setOpenModal={setOpenModal}/>
         </div>
-        <aside className="w-1/4  flex justify-center p-14">
+        <aside className="w-full md:w-[600px] flex justify-center p-0 md:p-14 md:pl-0">
             <CVcard/>
         </aside>
 

@@ -13,6 +13,7 @@ $router->map('GET', '/api/company/[i:company_id]', 'company');
 
 $router->map('POST', '/api/user/[i:user_id]', 'user');
 $router->map('DELETE', '/api/user/[i:user_id]', 'user');
+$router->map('GET', '/api/user/[i:user_id]', 'user');
 
 // CORS headers for all requests
 header("Access-Control-Allow-Origin: *");
