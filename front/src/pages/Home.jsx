@@ -34,7 +34,7 @@ export function Home() {
                     <i className="fa-solid fa-plus text-2xl font-bold text-center"></i>
                 </div>
             </div>
-            {data.filter((company) => company.name.includes(searchQuery ?? '') || company.job_title.includes(searchQuery ?? '')).map((company, index) => (
+            {data?.filter((company) => company.name.includes(searchQuery ?? '') || company.job_title.includes(searchQuery ?? ''))?.map((company, index) => (
                 <Card
                     key={index}
                     title={company.name}

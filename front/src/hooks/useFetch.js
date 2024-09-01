@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export function useFetch(url, options = {}) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
-
+    const navigate = useNavigate();
     useEffect(() => {
         fetch(url, {
             ...options,
@@ -13,7 +14,12 @@ export function useFetch(url, options = {}) {
                 ...options.headers
             }
         }).then(r => r.json()).then(data => {
-            setData(data)
+            if (data?.error && data?.code === 401) {
+                localStorage.clear()
+                navigate("/");
+            } else {
+                setData(data)
+            }
         }).catch((e) => {
             setError(e)
         }).finally(() => {
